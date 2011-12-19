@@ -47,7 +47,7 @@ endfunction "}}}
 call TodoCodeHighlightSnip('python', '```python', '```', 'SpecialComment')
 call TodoCodeHighlightSnip('ruby', '```ruby', '```', 'SpecialComment')
 call TodoCodeHighlightSnip('php', '```php', '```', 'SpecialComment')
-call TodoCodeHighlightSnip('bash', '```sh', '```', 'SpecialComment')
+call TodoCodeHighlightSnip('sh', '```bash', '```', 'SpecialComment')
 call TodoCodeHighlightSnip('sh', '```sh', '```', 'SpecialComment')
 call TodoCodeHighlightSnip('erlang', '```erlang', '```', 'SpecialComment')
 
