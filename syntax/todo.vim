@@ -43,6 +43,14 @@ function! TodoCodeHighlightSnip(filetype,start,end,textSnipHl) abort "{{{
   " of a highlighting group, which breaks the rule as per vanilla in the wiki.
 endfunction "}}}
 
+"TODO Make this happen dynamically
+call TodoCodeHighlightSnip('python', '```python', '```', 'SpecialComment')
+call TodoCodeHighlightSnip('ruby', '```ruby', '```', 'SpecialComment')
+call TodoCodeHighlightSnip('php', '```php', '```', 'SpecialComment')
+call TodoCodeHighlightSnip('bash', '```bash', '```', 'SpecialComment')
+call TodoCodeHighlightSnip('sh', '```sh', '```', 'SpecialComment')
+call TodoCodeHighlightSnip('erlang', '```erlang', '```', 'SpecialComment')
+
 hi def link todoHeadingRule           todoRule
 hi def link todoRule                  PreProc
 
