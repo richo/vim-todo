@@ -3,15 +3,63 @@
 " Maintainer: Rich Healey <richo@psych0tik.net>
 " Filenames: *.todo
 " Last Change: 2011 Dec 19
-" Credit goes out to @tpope, this is largely based on his todo.vim file
+"
+" Credit goes out to @tpope, this is largely based on his markdown.vim file
 
 if exists("b:current_syntax")
   finish
 endif
 
+runtime! syntax/html.vim
+unlet! b:current_syntax
+
+syn sync minlines=10
+syn case ignore
+
+syn match todoValid '[<>]\S\@!'
+syn match todoValid '&\%(#\=\w*;\)\@!'
+
+syn match todoLineStart "^[<@]\@!" nextgroup=@todoBlock
+
+syn cluster todoBlock contains=todoH1,todoH2,todoBlockquote,todoListMarker,todoOrderedListMarker,todoCodeBlock,todoRule
+syn cluster todoInline contains=todoLineBreak,todoLinkText,todoCode,todoEscape,@htmlTop
+
+syn match todoH1 ".\+\n=\+$" contained contains=@todoInline,todoHeadingRule
+syn match todoH2 ".\+\n-\+$" contained contains=@todoInline,todoHeadingRule
+
 syn match todoHeadingRule "^[=-]\+$" contained
 
-syn region todoCode matchgroup=todoCodeDelimiter start="``` \=" end=" \=```" keepend contains=todoLineStart
+syn region todoH1 matchgroup=todoHeadingDelimiter start="##\@!"      end="#*\s*$" keepend oneline contains=@todoInline contained
+syn region todoH2 matchgroup=todoHeadingDelimiter start="###\@!"     end="#*\s*$" keepend oneline contains=@todoInline contained
+
+syn match todoBlockquote ">\s" contained nextgroup=@todoBlock
+
+syn region todoCodeBlock start="    \|\t" end="$" contained
+
+syn match todoLineBreak "\s\{2,\}$"
+
+syn region todoAutomaticLink matchgroup=todoUrlDelimiter start="<\%(\w\+:\|[[:alnum:]_+-]\+@\)\@=" end=">" keepend oneline
+
+syn region todoCode matchgroup=todoCodeDelimiter start="`" end="`" transparent keepend contains=todoLineStart
+syn region todoCode matchgroup=todoCodeDelimiter start="`` \=" end=" \=``" keepend contains=todoLineStart
+
+syn match todoEscape "\\[][\\`*_{}()#+.!-]"
+
+hi def link todoH1                    htmlH1
+hi def link todoH2                    htmlH2
+hi def link todoHeadingRule           todoRule
+hi def link todoHeadingDelimiter      Delimiter
+hi def link todoBlockquote            Comment
+hi def link todoRule                  PreProc
+
+hi def link todoUrl                   Float
+hi def link todoUrlTitle              String
+hi def link todoUrlDelimiter          htmlTag
+hi def link todoUrlTitleDelimiter     Delimiter
+
+hi def link todoCodeDelimiter         Delimiter
+
+hi def link todoEscape                Special
 
 
 " TODO This needs to sort itself out automaticcally
@@ -51,9 +99,4 @@ call TodoCodeHighlightSnip('sh', '```bash', '```', 'SpecialComment')
 call TodoCodeHighlightSnip('sh', '```sh', '```', 'SpecialComment')
 call TodoCodeHighlightSnip('erlang', '```erlang', '```', 'SpecialComment')
 
-hi def link todoHeadingRule           todoRule
-hi def link todoRule                  PreProc
-
-hi def link todoCodeDelimiter         Delimiter
-
-
+let b:current_syntax = "todo"
